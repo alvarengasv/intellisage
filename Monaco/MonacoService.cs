@@ -7,6 +7,7 @@ using OmniSharp.Models.SignatureHelp;
 using OmniSharp.Models.v1.Completion;
 using OmniSharp.Options;
 using System.Text;
+using static MonacoService;
 
 
 public class MonacoService
@@ -94,7 +95,8 @@ $@"using System;
 
         var document = updatedSolution.GetDocument(_completionProject.DocumentId);
         var completionResponse = await _completionService.Handle(completionRequest, document);
-        
+
+        //Console.WriteLine("{0} ({1},{2}) RETURN COUNT: {3}", DateTime.Now, completionRequest.Line, completionRequest.Column, completionResponse.Items.Count);
 
         ResponsePayload p = new ResponsePayload(completionResponse, "GetCompletionAsync");
         
@@ -141,43 +143,49 @@ $@"using System;
 
     public async Task<byte[]> GetDiagnosticsAsync(string code)
     {
-        Solution updatedSolution;
-        do
+        try
         {
-            updatedSolution = _diagnosticProject.Workspace.CurrentSolution.WithDocumentText(_diagnosticProject.DocumentId, SourceText.From(code));
-        } while (!_diagnosticProject.Workspace.TryApplyChanges(updatedSolution));
-        var document = updatedSolution.GetDocument(_diagnosticProject.DocumentId);
-        var st = await document.GetSyntaxTreeAsync();
-
-        var compilation =
-        CSharpCompilation
-            .Create("Temp",
-                [st],
-                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, concurrentBuild: true,
-                optimizationLevel: OptimizationLevel.Debug),
-                references: RoslynProject.MetadataReferences
-            );
-
-        using (var temp = new MemoryStream())
-        {
-            var result = compilation.Emit(temp);
-            var semanticModel = compilation.GetSemanticModel(st, true);
-
-            var dotnetDiagnostics = result.Diagnostics;
-
-            var diagnostics = dotnetDiagnostics.Select(current =>
+            Solution updatedSolution;
+            do
             {
-                var lineSpan = current.Location.GetLineSpan();
+                updatedSolution = _diagnosticProject.Workspace.CurrentSolution.WithDocumentText(_diagnosticProject.DocumentId, SourceText.From(code));
+            } while (!_diagnosticProject.Workspace.TryApplyChanges(updatedSolution));
+            var document = updatedSolution.GetDocument(_diagnosticProject.DocumentId);
+            var st = await document.GetSyntaxTreeAsync();
+            var compilation =
+            CSharpCompilation
+                .Create("Temp",
+                    [st],
+                    options: new CSharpCompilationOptions(OutputKind.ConsoleApplication, concurrentBuild: true,
+                    optimizationLevel: OptimizationLevel.Debug),
+                    references: RoslynProject.MetadataReferences
+                );
 
-                return new Diagnostic()
+            using (var temp = new MemoryStream())
+            {
+                var result = compilation.Emit(temp);
+                var semanticModel = compilation.GetSemanticModel(st, true);
+
+                var dotnetDiagnostics = result.Diagnostics;
+
+                var diagnostics = dotnetDiagnostics.Select(current =>
                 {
-                    Start = lineSpan.StartLinePosition,
-                    End = lineSpan.EndLinePosition,
-                    Message = current.GetMessage(),
-                    Severity = this.GetSeverity(current.Severity)
-                };
-            }).ToList();
-            ResponsePayload p = new ResponsePayload(diagnostics, "GetDiagnosticsAsync");
+                    var lineSpan = current.Location.GetLineSpan();
+
+                    return new Diagnostic()
+                    {
+                        Start = lineSpan.StartLinePosition,
+                        End = lineSpan.EndLinePosition,
+                        Message = current.GetMessage(),
+                        Severity = this.GetSeverity(current.Severity)
+                    };
+                }).ToList();
+                ResponsePayload p = new ResponsePayload(diagnostics, "GetDiagnosticsAsync");
+                return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));
+            }
+        }catch(Exception ex)
+        {
+            ResponsePayload p = new ResponsePayload(new List<Diagnostic>(), "GetDiagnosticsAsync");
             return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));
         }
     }

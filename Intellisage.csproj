@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,20 +16,58 @@
     <PublishDir>publish/</PublishDir>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.9.2" />
-    <PackageReference Include="OmniSharp.Roslyn.CSharp" Version="1.37.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.13.0-3.24620.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0-3.24620.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.13.0-3.24620.4" />
+    <PackageReference Include="OmniSharp.Roslyn.CSharp" Version="1.39.13" />
     <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="4.1.2" />
-    <PackageReference Include="Tewr.BlazorWorker.Core" Version="4.2.0" />
-    <PackageReference Include="Tewr.BlazorWorker.Extensions.JSRuntime" Version="4.1.3" />
 
     <!-- For example project -->
-    <PackageReference Include="OpenAI" Version="1.11.0" />
+    <!-- <PackageReference Include="OpenAI" Version="1.11.0" /> -->
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\ReferenceAssemblies\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.GameHosting.SDK">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.Scripting">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.SDK">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.SDK.Constants">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.SDK.Constants.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.Web.Shared">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Web.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="AllowUsingAspNetCoreInBlazorWasm" AfterTargets="ProcessFrameworkReferences">
+    <ItemGroup>
+      <UnavailableRuntimePack Remove="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="del /q $(ProjectDir)\publish\wwwroot\_framework\*.dll&#xD;&#xA;exit 0" />
+  </Target>
+  <PropertyGroup>
+    <BlazorWebAssemblyLoadCompression>true</BlazorWebAssemblyLoadCompression>
+  </PropertyGroup>
 </Project>

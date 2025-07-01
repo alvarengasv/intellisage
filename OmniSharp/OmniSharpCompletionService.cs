@@ -125,7 +125,7 @@ public class OmniSharpCompletionService
         }
 
 
-        if (document is null || (request.TriggerCharacter?.ToString() ?? string.Empty) == "")
+        if (document is null /*|| (request.TriggerCharacter?.ToString() ?? string.Empty) == ""*/)
         {
             _logger.LogInformation("Could not find document for file {0}", request.FileName);
             return new CompletionResponse { Items = ImmutableArray<CompletionItem>.Empty };
@@ -153,18 +153,18 @@ public class OmniSharpCompletionService
 
             );
         _logger.LogTrace("Found {0} completions for {1}:{2},{3}",
-                         completions?.Items.IsDefaultOrEmpty != true ? 0 : completions.Items.Length,
+                         completions.ItemsList.Count,
                          request.FileName,
                          request.Line,
                          request.Column);
 
 
-        if (completions is null || completions.Items.Length == 0)
+        if (completions is null || completions.ItemsList.Count == 0)
         {
             return new CompletionResponse { Items = ImmutableArray<CompletionItem>.Empty };
         }
 
-        if (request.TriggerCharacter == ' ' && !completions.Items.Any(c => c.IsObjectCreationCompletionItem()))
+        if (request.TriggerCharacter == ' ' && !completions.ItemsList.Any(c => c.IsObjectCreationCompletionItem()))
         {
             // Only trigger on space if there is an object creation completion
             return new CompletionResponse { Items = ImmutableArray<CompletionItem>.Empty };
@@ -185,7 +185,7 @@ public class OmniSharpCompletionService
 
 
         var triggerCharactersBuilder = ImmutableArray.CreateBuilder<char>(completions.Rules.DefaultCommitCharacters.Length);
-        var completionsBuilder = ImmutableArray.CreateBuilder<CompletionItem>(completions.Items.Length);
+        var completionsBuilder = ImmutableArray.CreateBuilder<CompletionItem>(completions.ItemsList.Count);
 
         // If we don't encounter any unimported types, and the completion context thinks that some would be available, then
         // that completion provider is still creating the cache. We'll mark this completion list as not completed, and the
@@ -198,9 +198,9 @@ public class OmniSharpCompletionService
         var replacingSpanStartPosition = sourceText.Lines.GetLinePosition(typedSpan.Start);
         var replacingSpanEndPosition = sourceText.Lines.GetLinePosition(typedSpan.End);
 
-        for (int i = 0; i < completions.Items.Length; i++)
+        for (int i = 0; i < completions.ItemsList.Count; i++)
         {
-            var completion = completions.Items[i];
+            var completion = completions.ItemsList[i];
             var insertTextFormat = InsertTextFormat.PlainText;
             IReadOnlyList<LinePositionSpanTextChange>? additionalTextEdits = null;
             char sortTextPrepend = '0';
@@ -361,7 +361,7 @@ public class OmniSharpCompletionService
                 FilterText = completion.FilterText,
                 Kind = getCompletionItemKind(completion.Tags),
                 Detail = completion.InlineDescription,
-                Data = i,
+                Data = (0, i),
                 Preselect = completion.Rules.MatchPriority == MatchPriority.Preselect || filteredItems.Contains(completion.DisplayText),
                 CommitCharacters = commitCharacters,
             });
@@ -482,14 +482,14 @@ public class OmniSharpCompletionService
         var (completions, fileName, position) = _lastCompletion.Value;
 
         if (request.Item is null
-            || request.Item.Data >= completions.Items.Length
-            || request.Item.Data < 0)
+            || request.Item.Data.Index >= completions.ItemsList.Count
+            || request.Item.Data.Index < 0)
         {
             _logger.LogError("Received invalid completion resolve!");
             return new CompletionResolveResponse { Item = request.Item };
         }
 
-        var lastCompletionItem = completions.Items[request.Item.Data];
+        var lastCompletionItem = completions.ItemsList[request.Item.Data.Index];
         if (lastCompletionItem.DisplayTextPrefix + lastCompletionItem.DisplayText + lastCompletionItem.DisplayTextSuffix != request.Item.Label)
         {
             _logger.LogError($"Inconsistent completion data. Requested data on {request.Item.Label}, but found completion item {lastCompletionItem.DisplayText}");
