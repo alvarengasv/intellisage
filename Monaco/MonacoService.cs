@@ -1,13 +1,13 @@
-using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.Text;
 using OmniSharp.Models;
 using OmniSharp.Models.SignatureHelp;
 using OmniSharp.Models.v1.Completion;
 using OmniSharp.Options;
 using System.Text;
-using static MonacoService;
+using System.Text.Json;
 
 
 public class MonacoService
@@ -20,7 +20,8 @@ public class MonacoService
     OmniSharpSignatureHelpService _signatureService;
     OmniSharpQuickInfoProvider _quickInfoProvider;
 
-    JsonSerializerOptions jsonOptions = new JsonSerializerOptions {
+    JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+    {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
@@ -99,7 +100,7 @@ $@"using System;
         //Console.WriteLine("{0} ({1},{2}) RETURN COUNT: {3}", DateTime.Now, completionRequest.Line, completionRequest.Column, completionResponse.Items.Count);
 
         ResponsePayload p = new ResponsePayload(completionResponse, "GetCompletionAsync");
-        
+
         return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));
     }
 
@@ -133,10 +134,10 @@ $@"using System;
     public async Task<byte[]> GetQuickInfoAsync(string quickInfoRequestString)
     {
         var quickInfoRequest = JsonSerializer.Deserialize<QuickInfoRequest>(quickInfoRequestString);
-        
+
         var document = _diagnosticProject.Workspace.CurrentSolution.GetDocument(_diagnosticProject.DocumentId);
         var quickInfoResponse = await _quickInfoProvider.Handle(quickInfoRequest, document);
-        
+
         ResponsePayload p = new ResponsePayload(quickInfoResponse, "GetQuickInfoAsync");
         return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));
     }
@@ -163,7 +164,8 @@ $@"using System;
 
             using (var temp = new MemoryStream())
             {
-                var result = compilation.Emit(temp);
+                EmitOptions emitOptions = new EmitOptions(runtimeMetadataVersion: typeof(object).Assembly.ImageRuntimeVersion);
+                var result = compilation.Emit(temp, options: emitOptions);
                 var semanticModel = compilation.GetSemanticModel(st, true);
 
                 var dotnetDiagnostics = result.Diagnostics;
@@ -183,7 +185,8 @@ $@"using System;
                 ResponsePayload p = new ResponsePayload(diagnostics, "GetDiagnosticsAsync");
                 return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             ResponsePayload p = new ResponsePayload(new List<Diagnostic>(), "GetDiagnosticsAsync");
             return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(p, jsonOptions));

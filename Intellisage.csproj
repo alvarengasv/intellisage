@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <WasmEnableWebcil>false</WasmEnableWebcil>
@@ -25,13 +25,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.10" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.13.0-3.24620.4" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0-3.24620.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="4.13.0-3.24620.4" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.13.0-3.24620.4" />
     <PackageReference Include="OmniSharp.Roslyn.CSharp" Version="1.39.13" />
-    <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="4.1.2" />
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
+    <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="5.0.1" />
 
     <!-- For example project -->
     <!-- <PackageReference Include="OpenAI" Version="1.11.0" /> -->
@@ -44,8 +46,14 @@
     <Reference Include="TCAdmin.GameHosting.SDK">
       <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>
     </Reference>
+    <Reference Include="TCAdmin.Monitor.SDK">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Monitor.SDK.dll</HintPath>
+    </Reference>
     <Reference Include="TCAdmin.Scripting">
       <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.Scripting.SDK">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Scripting.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.SDK">
       <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.SDK.dll</HintPath>
@@ -69,5 +77,6 @@
   </Target>
   <PropertyGroup>
     <BlazorWebAssemblyLoadCompression>true</BlazorWebAssemblyLoadCompression>
+    <PublishTrimmed>False</PublishTrimmed>
   </PropertyGroup>
 </Project>
