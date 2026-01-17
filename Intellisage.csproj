@@ -40,8 +40,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Docker.DotNet">
+      <HintPath>..\ReferenceAssemblies\Docker.DotNet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>..\ReferenceAssemblies\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TCAdmin.Docker.SDK">
+      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Docker.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.GameHosting.SDK">
       <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>

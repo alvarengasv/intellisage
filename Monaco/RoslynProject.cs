@@ -33,12 +33,27 @@ public class AssemblyMetadataHelper
         var assemblyUrl = $"./_framework/{GetDeploymentName(assemblyName + ".dll")}";
         try
         {
+            Console.WriteLine($"Fetching assembly: {assemblyName}");
 
             var tmp = await _httpClient.GetAsync(assemblyUrl);
             if (tmp.IsSuccessStatusCode)
             {
-                var bytes = await tmp.Content.ReadAsByteArrayAsync();
-                Console.WriteLine($"Fetching assembly: {assemblyName}");
+                byte[]? bytes = null;
+                //if (assemblyUrl.EndsWith(".gz"))
+                //{
+                //    var stream = await tmp.Content.ReadAsStreamAsync();
+                //    bytes = await DecompressGzInMemory(stream);
+                //}
+                //else if (assemblyUrl.EndsWith(".br"))
+                //{
+                //    var stream = await tmp.Content.ReadAsStreamAsync();
+                //    bytes = await DecompressBrInMemory(stream);
+                //}
+                //else
+                //{
+                bytes = await tmp.Content.ReadAsByteArrayAsync();
+                //}
+
                 if (assemblyName == "System.Runtime")
                 {
                     var docProviderFetch = await _httpClient.GetAsync($"./System.Runtime.xml");
@@ -60,6 +75,34 @@ public class AssemblyMetadataHelper
         return ret;
     }
 
+    //private async Task<byte[]> DecompressGzInMemory(Stream stream)
+    //{
+    //    // Ensure the input stream is at position 0 if it supports seeking.
+    //    if (stream.CanSeek)
+    //        stream.Position = 0;
+
+    //    using var gzip = new GZipStream(stream, CompressionMode.Decompress, leaveOpen: true);
+    //    using var ms = new MemoryStream();
+
+    //    await gzip.CopyToAsync(ms).ConfigureAwait(false);
+
+    //    return ms.ToArray();
+    //}
+
+    //private async Task<byte[]> DecompressBrInMemory(Stream stream)
+    //{
+    //    // Ensure the input stream is at position 0 when possible
+    //    if (stream.CanSeek)
+    //        stream.Position = 0;
+
+    //    using var decompressed = new MemoryStream();
+    //    using var brotli = new BrotliStream(stream, CompressionMode.Decompress, leaveOpen: true);
+
+    //    await brotli.CopyToAsync(decompressed).ConfigureAwait(false);
+
+    //    return decompressed.ToArray();
+    //}
+
     private string GetDeploymentName(string originalDllName)
     {
         var root = _blazorBootDocument.RootElement;
@@ -74,7 +117,7 @@ public class AssemblyMetadataHelper
                 }
             }
         }
-        return "NOT-FOUND"; // Return null if not found
+        return $"NOT-FOUND-{originalDllName}"; // Return null if not found
     }
 }
 
@@ -126,7 +169,9 @@ public class RoslynProject
         Assemblies.Add(typeof(System.Linq.Expressions.Expression).Assembly);
         Assemblies.Add(typeof(TCAdmin.SDK.Constants.BuiltInRoles).Assembly);
         Assemblies.Add(typeof(TCAdmin.SDK.Utility).Assembly);
-        Assemblies.Add(typeof(TCAdmin.SDK.GameHosting.GameHostingModule).Assembly);
+        Assemblies.Add(typeof(TCAdmin.GameHosting.SDK.GameHostingModule).Assembly);
+        Assemblies.Add(typeof(TCAdmin.Docker.SDK.DockerModule).Assembly);
+        Assemblies.Add(typeof(Docker.DotNet.DockerClient).Assembly);
         Assemblies.Add(typeof(TCAdmin.Web.Shared.Api.Attributes.ApiRouteAttribute).Assembly);
         Assemblies.Add(typeof(TCAdmin.Scripting.ScriptingEnvironment).Assembly);
         Assemblies.Add(typeof(TCAdmin.Scripting.SDK.Interfaces.IScriptEngine).Assembly);
