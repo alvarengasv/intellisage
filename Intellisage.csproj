@@ -25,6 +25,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ConfuserEx-deploy\**" />
+    <Content Remove="ConfuserEx-deploy\**" />
+    <EmbeddedResource Remove="ConfuserEx-deploy\**" />
+    <None Remove="ConfuserEx-deploy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.10" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.13.0-3.24620.4" />
@@ -41,34 +48,34 @@
 
   <ItemGroup>
     <Reference Include="Docker.DotNet">
-      <HintPath>..\ReferenceAssemblies\Docker.DotNet.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Docker.DotNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore">
-      <HintPath>..\ReferenceAssemblies\Microsoft.EntityFrameworkCore.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.Docker.SDK">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Docker.SDK.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Docker.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.GameHosting.SDK">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.Monitor.SDK">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Monitor.SDK.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Monitor.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.Scripting">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Scripting.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.Scripting.SDK">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Scripting.SDK.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Scripting.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.SDK">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.SDK.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.SDK.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.SDK.Constants">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.SDK.Constants.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.SDK.Constants.dll</HintPath>
     </Reference>
     <Reference Include="TCAdmin.Web.Shared">
-      <HintPath>..\ReferenceAssemblies\Confused\TCAdmin.Web.Shared.dll</HintPath>
+      <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Web.Shared.dll</HintPath>
     </Reference>
   </ItemGroup>
 

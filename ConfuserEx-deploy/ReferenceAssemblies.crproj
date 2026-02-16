@@ -1,0 +1,27 @@
+<project outputDir="Confused" baseDir=".\ReferenceAssemblies" xmlns="http://confuser.codeplex.com">
+  <rule pattern="true" preset="normal" />
+  <module path="TCAdmin.Scripting.dll" snKey="E:\source\ReferenceAssemblies\TCAdmin3.snk" />
+  <module path="TCAdmin.Scripting.SDK.dll" />
+  <module path="TCAdmin.SDK.Constants.dll" snKey="E:\source\ReferenceAssemblies\TCAdmin3.snk" />
+  <module path="TCAdmin.SDK.dll" snKey="E:\source\ReferenceAssemblies\TCAdmin3.snk" />
+  <module path="TCAdmin.Monitor.SDK.dll" />
+  <module path="TCAdmin.Web.Shared.dll" snKey="E:\source\ReferenceAssemblies\TCAdmin3.snk" />
+  <module path="TCAdmin.GameHosting.SDK.dll" snKey="E:\source\ReferenceAssemblies\TCAdmin3.snk" />
+  <module path="TCAdmin.Docker.SDK.dll" />
+  <probePath>C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\9.0.13\ref\net9.0</probePath>
+  <probePath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.13</probePath>
+  <probePath>C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.13</probePath>
+  <probePath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\9.0.13\ref\net9.0</probePath>
+  <probePath>C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.24</probePath>
+  <probePath>C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\8.0.24\ref\net8.0</probePath>
+  <probePath>C:\Program Files\PowerShell\7</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.SDK\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.SDK.Constants\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.Web.Shared\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.GameHosting.SDK\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.Scripting\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.Web.Client\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.Web\bin\Release\net9.0</probePath>
+  <probePath>E:\TCAdmin3\Source\TCAdminv3\src\TCAdmin.Monitor\bin\Release\net9.0</probePath>
+
+</project>
