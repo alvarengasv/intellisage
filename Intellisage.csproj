@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <WasmEnableWebcil>false</WasmEnableWebcil>
@@ -32,15 +32,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.10" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.13.0-3.24620.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0-3.24620.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="4.13.0-3.24620.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.13.0-3.24620.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.5" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="5.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="5.3.0" />
     <PackageReference Include="OmniSharp.Roslyn.CSharp" Version="1.39.13" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-    <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="5.0.1" />
+    <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="6.0.0" />
 
     <!-- For example project -->
     <!-- <PackageReference Include="OpenAI" Version="1.11.0" /> -->
@@ -55,27 +55,43 @@
     </Reference>
     <Reference Include="TCAdmin.Docker.SDK">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Docker.SDK.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.GameHosting.SDK">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.GameHosting.SDK.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.Monitor.SDK">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Monitor.SDK.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.Scripting">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Scripting.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.Scripting.SDK">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Scripting.SDK.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.SDK">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.SDK.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.SDK.Constants">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.SDK.Constants.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
     <Reference Include="TCAdmin.Web.Shared">
       <HintPath>ConfuserEx-deploy\ReferenceAssemblies\Confused\TCAdmin.Web.Shared.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <TreatAsUsed>true</TreatAsUsed>
     </Reference>
   </ItemGroup>
 

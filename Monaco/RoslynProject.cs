@@ -21,6 +21,10 @@ public class AssemblyMetadataHelper
     }
     public async Task<MetadataReference?> GetAssemblyMetadataReference(Assembly assembly)
     {
+        return await GetAssemblyMetadataReference(assembly.GetName().Name ?? "");
+    }
+    public async Task<MetadataReference?> GetAssemblyMetadataReference(string assembly)
+    {
         if (_blazorBootDocument == null)
         {
             var bootJsonResponse = await _httpClient.GetAsync("./_framework/blazor.boot.json");
@@ -29,7 +33,7 @@ public class AssemblyMetadataHelper
         }
 
         MetadataReference? ret = null;
-        var assemblyName = assembly.GetName().Name ?? "";
+        var assemblyName = assembly/*.GetName().Name ?? ""*/;
         var assemblyUrl = $"./_framework/{GetDeploymentName(assemblyName + ".dll")}";
         try
         {
@@ -125,6 +129,8 @@ public class AssemblyMetadataHelper
 public class RoslynProject
 {
     private List<Assembly> Assemblies = new List<Assembly>();
+    private List<string> AssemblyNames = new List<string>();
+
     public static List<MetadataReference> MetadataReferences = new List<MetadataReference>();
     private string Uri { get; init; }
     public RoslynProject(string uri)
@@ -167,16 +173,18 @@ public class RoslynProject
         Assemblies.Add(typeof(System.Formats.Tar.TarFile).Assembly);
         Assemblies.Add(typeof(System.IO.Compression.GZipStream).Assembly);
         Assemblies.Add(typeof(System.Linq.Expressions.Expression).Assembly);
-        Assemblies.Add(typeof(TCAdmin.SDK.Constants.BuiltInRoles).Assembly);
-        Assemblies.Add(typeof(TCAdmin.SDK.Utility).Assembly);
-        Assemblies.Add(typeof(TCAdmin.GameHosting.SDK.GameHostingModule).Assembly);
-        Assemblies.Add(typeof(TCAdmin.Docker.SDK.DockerModule).Assembly);
         Assemblies.Add(typeof(Docker.DotNet.DockerClient).Assembly);
-        Assemblies.Add(typeof(TCAdmin.Web.Shared.Api.Attributes.ApiRouteAttribute).Assembly);
-        Assemblies.Add(typeof(TCAdmin.Scripting.ScriptingEnvironment).Assembly);
-        Assemblies.Add(typeof(TCAdmin.Scripting.SDK.Interfaces.IScriptEngine).Assembly);
-        Assemblies.Add(typeof(TCAdmin.Monitor.SDK.Interfaces.IServiceHandler).Assembly);
         Assemblies.Add(typeof(XDocument).Assembly);
+
+        AssemblyNames.Add("TCAdmin.SDK.Constants");
+        AssemblyNames.Add("TCAdmin.SDK");
+        AssemblyNames.Add("TCAdmin.GameHosting.SDK");
+        AssemblyNames.Add("TCAdmin.Docker.SDK");
+        AssemblyNames.Add("TCAdmin.Web.Shared");
+        AssemblyNames.Add("TCAdmin.Scripting");
+        AssemblyNames.Add("TCAdmin.Scripting.SDK");
+        AssemblyNames.Add("TCAdmin.Monitor.SDK");
+
     }
     public async Task Init()
     {
@@ -188,20 +196,21 @@ public class RoslynProject
             var mh = new AssemblyMetadataHelper(Uri);
 
             var initializedAssemblies = new List<string>();
-            foreach (var a in Assemblies)
+            AssemblyNames.AddRange(Assemblies.Select(x => x.GetName().Name));
+            foreach (var a in AssemblyNames)
             {
                 try
                 {
                     var metadataReference = await mh.GetAssemblyMetadataReference(a);
                     if (metadataReference == null)
                     {
-                        Console.WriteLine($"Did not get metadata ref {a.FullName}");
+                        Console.WriteLine($"Did not get metadata ref {a}");
                         continue;
                     }
-                    if (!initializedAssemblies.Contains(a.FullName))
+                    if (!initializedAssemblies.Contains(a))
                     {
                         MetadataReferences.Add(metadataReference);
-                        initializedAssemblies.Add(a.FullName);
+                        initializedAssemblies.Add(a);
                     }
                 }
                 catch (Exception e)
